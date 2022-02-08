@@ -1,54 +1,34 @@
 package austinm.projects.project2;
 
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
-    private static final int NUMBER_MIN = 100;
-    private static final int NUMBER_MAX = 105;
+    // Note: Regex is designed to match within the bounds of 0-9999
+    private static final int ANSWER_MIN = 100;
+    private static final int ANSWER_MAX = 105;
     private static final int AMOUNT_OF_GUESSES = 6;
-    private static final int OUT_OF_BOUNDS_ERROR_CODE = NUMBER_MIN - 1;
+    static GuessTheNumber game;
 
     public static void main(String[] args) {
         try (Scanner scan = new Scanner(System.in)) {
             System.out.println("Hello! What is your name?");
-            String name = scan.nextLine();
+            String input = scan.nextLine();
 
-            playGame(name, scan);
+            playGame(input, scan);
         }
     }
 
-    private static void playGame(String name, Scanner scan) {
-        int ans = ThreadLocalRandom.current().nextInt(NUMBER_MIN, NUMBER_MAX+1);
-        int guesses = 1;
+    public static void playGame(String name, Scanner scan) {
+
+        game = new GuessTheNumber(name, AMOUNT_OF_GUESSES, ANSWER_MIN, ANSWER_MAX);
+
+        System.out.println("Well, " + game.getName() + ", I am thinking of a number between " + game.getAnswerMin() + " and " + game.getAnswerMax() +".");
+        System.out.println("You have " + game.getMaxGuesses() + " chances to guess my number. Good luck :)");
         String input;
-
-        System.out.println("Well, " + name + ", I am thinking of a number between " + NUMBER_MIN + " and " + NUMBER_MAX +".");
-        System.out.println("You have " + AMOUNT_OF_GUESSES + " chances to guess my number. Good luck :)");
-
-        while (guesses <= AMOUNT_OF_GUESSES) {
+        while (!game.gameIsOver()) {
             System.out.println("Take a guess.");
             input = scan.nextLine();
-
-            int temp = parseGuess(input);
-            if (temp >= NUMBER_MIN && temp <= NUMBER_MAX) {
-                if (temp > ans) {
-                    System.out.println("Your guess is too high.");
-                } else if (temp < ans) {
-                    System.out.println("Your guess is too low.");
-                } else {
-                    System.out.println("Good job, " + name + "! You guessed my number in " + guesses + " guess" + ((guesses != 1) ? "es" : "") + "!");
-                    break;
-                }
-                if (guesses == AMOUNT_OF_GUESSES) {
-                    System.out.println("Oh no " + name + "! You ran out of guesses. Better luck next time!");
-                    break;
-                }
-
-                guesses++;
-            } else {
-                System.out.println("Please enter a number between " + NUMBER_MIN + " and " + NUMBER_MAX +".");
-            }
+            game.makeGuess(input);
         }
 
         System.out.println("Would you like to play again? (y or n)");
@@ -57,12 +37,6 @@ public class Main {
         else { scan.close(); System.exit(0);}
     }
 
-    private static int parseGuess(String input) {
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("NumberFormatException: Not a valid input");
-            return OUT_OF_BOUNDS_ERROR_CODE;
-        }
-    }
+
+
 }
