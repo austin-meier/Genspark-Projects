@@ -4,8 +4,8 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
-    private static final int NUMBER_MIN = 1;
-    private static final int NUMBER_MAX = 20;
+    private static final int NUMBER_MIN = 100;
+    private static final int NUMBER_MAX = 105;
     private static final int AMOUNT_OF_GUESSES = 6;
     private static final int OUT_OF_BOUNDS_ERROR_CODE = NUMBER_MIN - 1;
 
@@ -37,7 +37,7 @@ public class Main {
                 } else if (temp < ans) {
                     System.out.println("Your guess is too low.");
                 } else {
-                    System.out.println("Good job, " + name + "! You guessed my number in " + guesses + " guesses!");
+                    System.out.println("Good job, " + name + "! You guessed my number in " + guesses + " guess" + ((guesses != 1) ? "es" : "") + "!");
                     break;
                 }
                 if (guesses == AMOUNT_OF_GUESSES) {
