@@ -1,6 +1,5 @@
 package austinm.projects.project2;
 
-import java.text.ParseException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
